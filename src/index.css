@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface-muted text-ink font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-[-0.011em];
+  }
+
+  ::selection {
+    @apply bg-brand-100 text-brand-800;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-400 ring-offset-2 ring-offset-white;
+  }
+
+  /* Slimmer scrollbars inside panels, so a 400px sidebar doesn't lose 17px to chrome. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.surface.border') transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full border-[3px] border-solid border-transparent bg-surface-border bg-clip-padding;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    @apply bg-ink-subtle bg-clip-padding;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-surface-border bg-white shadow-card;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-surface-border bg-white px-3 py-2 text-sm
+           text-ink transition-colors placeholder:text-ink-subtle
+           focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100
+           disabled:bg-surface-muted disabled:text-ink-subtle;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+
+  .rich-text strong {
+    @apply font-semibold text-ink;
+  }
+  .rich-text em {
+    @apply italic;
+  }
+  .rich-text ul {
+    @apply my-1 list-disc space-y-0.5 pl-5;
+  }
+  .rich-text code {
+    @apply rounded bg-surface-sunken px-1 py-0.5 font-mono text-[0.85em];
+  }
+}
+
+.react-pdf__Page__canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.react-pdf__Page {
+  @apply overflow-hidden rounded-lg;
+}
