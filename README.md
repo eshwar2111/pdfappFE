@@ -3,7 +3,14 @@
 React + TypeScript SPA for uploading PDFs, reading AI summaries, asking
 questions about a document, sharing it by link, and commenting.
 
-Backend repository: **`pdf-intelligence-backend`** (FastAPI + PostgreSQL/pgvector).
+| | |
+|---|---|
+| **Live app** | <https://nice-ocean-0f59a2900.7.azurestaticapps.net> |
+| **API** | <https://pdf-intelligence-api-bccedkabcaczf4er.centralindia-01.azurewebsites.net> |
+| **Backend repo** | <https://github.com/eshwar2111/pdfappBE> |
+
+Hosted on Azure Static Web Apps; deployment steps live in the backend repo's
+`DEPLOYMENT.md`.
 
 ---
 
