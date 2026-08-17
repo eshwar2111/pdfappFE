@@ -41,18 +41,29 @@ jobs:
           VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
         run: npm run build
 
+      # Vite does not copy this: it lives at the repo root, but only the
+      # contents of dist/ are uploaded. Without it Static Web Apps has no
+      # navigationFallback rule, so a hard refresh on /s/<token> — the guest
+      # flow a reviewer will exercise — returns 404 instead of index.html.
+      - name: Include Static Web Apps routing config in the output
+        run: cp staticwebapp.config.json dist/
+
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
-          app_location: '/'
-          output_location: 'dist'
-          # The build already ran above, with the environment it needs. Oryx
-          # would otherwise rebuild without VITE_API_BASE_URL and ship a bundle
-          # that calls its own origin for the API.
+          # With skip_app_build, app_location is uploaded verbatim and
+          # output_location is ignored — so this must point at the built
+          # artifact, not the project root. Pointing it at '/' ships the source
+          # tree: the browser then loads the unbuilt index.html and fails on
+          # /src/main.tsx with a MIME-type error.
+          app_location: 'dist'
           skip_app_build: true
+          # The build already ran above with VITE_API_BASE_URL set. Letting the
+          # action rebuild would drop that variable and ship a bundle that calls
+          # its own origin for the API.
 
   close-pull-request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
